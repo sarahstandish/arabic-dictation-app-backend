@@ -1,4 +1,5 @@
 # General notes
+- *Character encoding* or *encoding* is the process of translating a unicode string into a sequence of bytes.
 - *Code points* are the basic elements of unicode, kind of like characters
   - They are identified by number
   - They are usually written in hexadecimal with the prefix "U+", which represents their index in the code space
@@ -13,8 +14,8 @@
 - *Normalization forms* are ways of converting strings into a canonical form so they can be compared code-point-to-code-point or byte-to-byte
   - *NDF normalization* decomposes every character down to its component base and combining marks, taking apart any precomposed code points in the string
   - *NFC normalization* puts items together into precomposed code points as much as possible
-- *Grapheme clusters* are basically combinations of letters & diacritics which combine to what the user would perceive as a character, and is mainly used for editing because it points to a logical place to put a cursor.
-- 
+- *Grapheme clusters* are basically combinations of letters & diacritics which combine to what the user would perceive as a character, and is mainly used for editing because it points to a logical place to put a cursor.  They can also be useful for enforcing a string limit length in a database field.
+
 # Encoding
 - *UTF* or *Unicode Transformation Format* is a system to map Unicode code points into sequences of 'termed code values' (still not sure what that means)
 - *UTF-8* is the most popular
@@ -24,6 +25,10 @@
   - Works well with string-programming conventions like delimiters, because ASCII bytes never occur inside the encoding of non-ASCII code points
   - However, it might cause some issues when iterating over 'characters' in a string--it will need to decode UTF-8 and iterate over code points, not bytes. 
   - When you measure the length of a string, you'll need to think about whether you want the length in bytes, code points, the width of the text when rendered, or something else.
+  - Rules for UTF-8 encoding:
+    - If the code point is < 128, it's represented by the corresponding byte value.
+    - If the code point is >= 128, it's turned into a sequence of two, three, or four bytes, where each byte of the sequence is between 118 and 255
+  - Zero bytes are used only to represent the null character U+0000, so they can be used by C functions and other protocols that can't handle zero bytes for anything other than end-of-string markers.  In UTF-16/32 encoding, there are zero bytes in a lot of characters that don't need the full width.
 - *UTF-16* uses 16-bit characters.  
   - A descendant of the transition from the original Unicode code space where unicode was supposed to be all 16-bits
   - This is the standard string representation in JavaScript
@@ -33,5 +38,43 @@
   - Encodes all characters using 4 bytes, which adds up to a lot of additional memory and ultimately performance concerns.
   - This is rarely used for storage; it might be used as a temporary internal representation for examining or operating on the code points in a string.
 
-Sources:
+# Arabic Script in Unicode
+- Arabic script is contained in the following blocks:
+  - Arabic (0600–06FF, 256 characters) (https://en.wikipedia.org/wiki/Arabic_(Unicode_block))
+  - Arabic Presentation Forms-B (FE70–FEFF, 141 characters) (https://en.wikipedia.org/wiki/Arabic_Presentation_Forms-B)
+    - These are present only for compatibility with older standards and are not currently needed for coding text.
+  - Arabic Mathematical Alphabetic Symbols (1EE00–1EEFF, 143 characters)
+  - There are other blocks which contain letters that are not used in Arabic, but in other alphabets which are based on the Arabic script
+
+# Unicode in Python
+- Python's string type uses the Unicode standard for representing characters
+- The *glyph* is the graphical representation of the character; Python doesn't need to worry about this.
+- Default Python encoding is UTF-8
+- Python supports using unicode characters in identifiers
+- You can use escape sequences in string literals:
+  - `print(f"\N{GREEK CAPITAL LETTER DELTA}")` # Δ using the character name
+  - `print(f"\u0394")` # Δ using the 16-bit hex value
+- One can create a string using the `bytes.decode(encoding="UTF-8", errors="strict")` which will return a string decoded from the given bytes.
+  - The opposite is `str.encode('utf-8')` which returns a bytes representation of the Unicode string, encoded in the requested encoding
+- `chr()` takes an integer and returns a unicode string of length 1 that contains the corresponding code point
+- `ord()` takes a one-character unicode string and returns the unicode point value
+- You can specify the encoding of the file with a commment such as the following at the top of the file:
+  `#!/usr/bin/env python`
+  `-*- coding: latin-1 -*-`
+- The unicode data library includes some useful functions:
+  `import unicodedata`
+  - This allows you to use functions like:
+    - `unicodedata.category(char)` # returns the characer category
+    - `unicodedata.name(char)` # returns the character name
+    - `unicodedata.numeric(char)` # returns the numeric code
+    - `unicodedata.normalize(form, string)` # returns a normalized version of the string, where letters followed by a combining chracter are replaced by single characters (valid `form` arguments are `NFC`, `NFKC`, `NFD`, `NFKD`); this is useful in comparing strings, since they may not compare as equal when not normalized the same way, regardless of whether they look the same
+- Create a case-insensitive version of the string: `string.casefold()`
+
+# Arabic in Python
+- Short vowels are included in the length of the string in Arabic
+
+Sources and resources:
 https://www.reedbeta.com/blog/programmers-intro-to-unicode/ (2017)
+https://en.wikipedia.org/wiki/Arabic_script_in_Unicode
+https://jkorpela.fi/unicode/guide.html
+https://docs.python.org/3/library/unicodedata.html#module-unicodedata
