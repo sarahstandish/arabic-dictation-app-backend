@@ -15,6 +15,9 @@
   - *NDF normalization* decomposes every character down to its component base and combining marks, taking apart any precomposed code points in the string
   - *NFC normalization* puts items together into precomposed code points as much as possible
 - *Grapheme clusters* are basically combinations of letters & diacritics which combine to what the user would perceive as a character, and is mainly used for editing because it points to a logical place to put a cursor.  They can also be useful for enforcing a string limit length in a database field.
+- *Complex text layout* or *complex text rendering* is the typesetting of writing systems in which the shape or positioning of a grapheme depends on its relation to other graphemes.
+- *Zero width joiner* is used to connect letters (if necessary) without a visible ligature.
+- *zero width non-joiner* is used to separate letters that appear next to each other and which should not be joined.
 
 # Encoding
 - *UTF* or *Unicode Transformation Format* is a system to map Unicode code points into sequences of 'termed code values' (still not sure what that means)
