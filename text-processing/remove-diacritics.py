@@ -104,8 +104,6 @@ def extract_plurals(source_file):
             writer.writeheader()
             writer.writerows(destination_content)
 
-extract_plurals(source_file)
+destination_content = remove_diacritics(source_file)
 
-# destination_content = remove_diacritics(source_file)
-
-# write_destination_content_to_file(destination_content, destination_file)
+write_destination_content_to_file(destination_content, destination_file)
