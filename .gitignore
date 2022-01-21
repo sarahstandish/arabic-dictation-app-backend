@@ -4,3 +4,4 @@ text-processing/text-process-notes.md
 voweled-and-unvoweled-words.csv
 plurals.csv
 .DS_Store
+load_arabic_words.sql
