@@ -76,8 +76,61 @@
 # Arabic in Python
 - Short vowels are included in the length of the string in Arabic
 
-Sources and resources:
+# Questions
+- What is the best way to send multiple search parameters of variable and unknown number?  Right now I'm thinking I'll send all the letters as one string following the query parameter, e.g. `GET url/words?letters=ابتث`, then they would be broken apart on the back end and used to search.
+- What are the query parameters I should expect, and how should I handle them on the back end?
+- Where do I make the call to the voice-to-text API?  Probably I have to do it on the front end, because I'm not sure if I can send a file back as a response--but why not?
+- What would be an invalid search?
+- What tests do I need?
+- If I need to have a file that's specifically to be pronounced by the API, do I need to store that in the database as well, or would I dynamically generate that, maybe in the model?
+
+# API routes needed
+1. `GET /words` # this means the user has selected 'all' or  returns 25 randomly selected words
+      Response: 
+      `["exhausted_list": False,`
+        `"words:` 
+          `[ "{'voweled_word': 'ثُبوت', 'unvoweled_word': 'ثبوت', 'pronounceable_word': 'ثُبوتْ'}]`
+      `]`
+2. `GET /words?letters=ابتث` for example, letters would be sent as one string and the broken apart on the back end?
+   - Response would be the same as the above structure
+   - Apparently need to just decode the incoming content, after encoding it as utf-8 on the front end to send (looks like it's necessary to )
+
+# API responses
+  - Successful response (200): words are sent along with the status
+  - Bad request (400):
+    - Fewer than three letters were selected in the query string
+    - Letters sent in the query string were not Arabic letters
+  - Not found (404):
+    - No words exist with the requested combination of letters
+   
+
+# Model needed
+- `Word` model
+  - `id` auto generated
+  - `voweled_word` string, up to 50 chars
+  - `unvoweled_word` string, up to 50 chars
+- Method: generate pronounceable word for API: This just involves checking the last character of the word and adding a sukuun if necessary
+- Method: randomizing effect:
+  - if more than 25 database entries returned, selects 25 randomly and returns them
+  - if fewer than 25 words return, shuffles the order
+
+# API tests needed
+- Query all; should return all items
+- Insert two words into database, ثبوت and ثبت; query string is ث ب ت; query should only return ثبت
+- Test query with multiple letters, e.g. ك ب ت ا  will still return  ثبت
+- Send a query with fewer than 3 characters, e.g. ثب; should return an error
+- Send a query with non-Arabic characters as the query string, should return an error
+- Send a query where no words exist that match those specifications, e.g. the database contains ثبوت and ثبت and the query is ك ل م
+- Test query with tanween fatha
+- Test query with alif maksuura
+- Test query with hamza in every position
+
+# Sources and resources:
 https://www.reedbeta.com/blog/programmers-intro-to-unicode/ (2017)
 https://en.wikipedia.org/wiki/Arabic_script_in_Unicode
 https://jkorpela.fi/unicode/guide.html
 https://docs.python.org/3/library/unicodedata.html#module-unicodedata
+
+# To read
+https://dmitripavlutin.com/what-every-javascript-developer-should-know-about-unicode/#3-unicode-in-javascript
+
