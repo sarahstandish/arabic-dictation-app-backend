@@ -6,3 +6,5 @@ plurals.csv
 .DS_Store
 load_arabic_words.sql
 .env
+__pycache__
+*.pyc
