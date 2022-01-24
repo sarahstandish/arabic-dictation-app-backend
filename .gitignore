@@ -5,3 +5,4 @@ voweled-and-unvoweled-words.csv
 plurals.csv
 .DS_Store
 load_arabic_words.sql
+.env
