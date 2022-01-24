@@ -5,6 +5,7 @@ class Word(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     voweled_word = db.Column(db.String(50))
     unvoweled_word = db.Column(db.String(50))
+    __tablename__ = 'words'
 
     def to_dict(self):
         return {
