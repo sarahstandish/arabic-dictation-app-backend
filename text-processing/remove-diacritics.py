@@ -11,14 +11,22 @@ def remove_diacritics(source_file):
     Diacritics:
     U+0650 kesra
     U+064F damma
-    U+064E kesra
+    U+064E fatha
     U+0651 shadda
     U+0652 sukuun
     U+0670 superscript alif
     U+064B tanween fatha
     """
 
-    diacritics = ["\u0650", "\u064F", "\u064E", "\u0651", "\u0652", "\u0670", "\u064B"]
+    diacritics = [
+        "\u0650", # kesra
+        "\u064F", # damma
+        "\u064E", # fatha
+        "\u0651", # shadda
+        "\u0652", # sukuun
+        "\u0670", # dagger alif
+        "\u064B" # tanween fatha
+        ]
     destination_content = []
 
     with open(source_file, newline='', encoding='UTF-8') as csvfile:
