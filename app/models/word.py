@@ -82,6 +82,7 @@ class Word(db.Model):
             "\u0625", # alif with hamza on bottom
             "\u0624", # waw with hamza on top
             "\u0626", # yaa with hamza on top
+            "\u064B", # tanween fatha
             "\u0627", # alif
             "\u0628", # baa
             "\u0629", # taa marbuuta
