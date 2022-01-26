@@ -14,19 +14,20 @@ def handle_words():
     if letters:
         similar_to_string = Word.get_letter_string(letters)
 
-        sql_query = sqlalchemy.text(f"select * from words where unvoweled_word not similar to '{similar_to_string}'")
-        result = db.session.execute(sql_query)
-        for r in result:
-            print(r)
-
-        return { "message" : f"letters {similar_to_string} received"}
-
+        sql_query = sqlalchemy.text(f"SELECT * FROM words WHERE unvoweled_word NOT SIMILAR TO '{similar_to_string}'")
+        words = db.session.execute(sql_query).fetchall()
+        # result is a list of rowproxy items
+        # for r in result:
+        #     # can be accessed via keys r['voweled_word']
+        #     print(type(r))
+        #     print(r.items())
+        #     print(r['voweled_word'])
+        words = Word.get_randomized_list(words)
+        return jsonify([Word.row_proxy_to_dict(word) for word in words])
 
     else:
         words = Word.query.all()
-        print(type(words))
-        print(type(words[0]))
 
-    words = Word.get_randomized_list(words)
+        words = Word.get_randomized_list(words)
 
-    return jsonify([word.to_dict() for word in words])
+        return jsonify([word.to_dict() for word in words])

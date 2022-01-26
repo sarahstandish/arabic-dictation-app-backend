@@ -28,7 +28,7 @@ def add_one_word(app):
 
 # fixture that creates three ث ب ت entries and saves them in the database
 @pytest.fixture
-def add_three_tha_ba_ta_words(app):
+def add_three_words(app):
     db.session.add_all([
         Word(voweled_word= "ثَبَتَ", unvoweled_word="ثبت"),
         Word(voweled_word= "ثُبوت", unvoweled_word="ثبوت"),
