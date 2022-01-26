@@ -22,14 +22,6 @@ ACCEPTABLE_WORD_ENDINGS = [
     "\u0649" # alif maqsuura
     ]
 
-def test_get_words_no_saved_words(client):
-    # Act
-    response = client.get("/words")
-    response_body = response.get_json()
-
-    # Assert
-    assert response.status_code == 404
-    assert response_body == { "message": "no results matched your search" }
 
 def test_get_words_one_saved_word(client, add_one_word):
     # Act
@@ -100,12 +92,5 @@ def test_get_words_longer_query_param(client, add_eleven_words):
         for char in word["unvoweled_word"]:
                 assert char not in DIACRITICS
 
-def test_get_words_query_param_no_matches_found(client, add_three_words):
 
-    # Act
-    response = client.get("/words?letters=منر")
-    response_body = response.get_json()
 
-    # Assert
-    assert response.status_code == 404
-    assert response_body == { "message": "no results matched your search" }
