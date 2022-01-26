@@ -124,10 +124,7 @@ https://stackoverflow.com/questions/17972020/how-to-execute-raw-sql-in-flask-sql
 - De dupe data set
 
 # To Test
-- search for a combination of letters that doesn't exist
-- Min lengths of query param is 3
 - Return error if query string is in English
 
 # API tests needed
-- Send a query with fewer than 3 characters, e.g. ثب; should return an error
 - Send a query with non-Arabic characters as the query string, should return an error

@@ -13,6 +13,11 @@ def handle_words():
 
     # if query param found, filter by letters in query param value
     if letters:
+
+        # check if query string is valid
+        if Word.invalid_query_string_length(letters):
+            return { "message" : "Query string must contain at least three valid characters."}, 400
+
         # get string to pass to sql query
         similar_to_string = Word.get_letter_string(letters)
 

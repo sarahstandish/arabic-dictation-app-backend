@@ -1,4 +1,4 @@
-from flask import current_app
+from flask import current_app, abort, make_response, Response, jsonify
 from app import db
 import random
 
@@ -134,10 +134,25 @@ class Word(db.Model):
 
     @staticmethod
     def row_proxy_to_dict(rowproxy):
+        """
+        Change a sqlalchemy RowProxy object to a dictionary.
+        """
+
         return {
             "id": rowproxy['id'],
             "voweled_word": rowproxy['voweled_word'],
             "unvoweled_word": rowproxy['unvoweled_word'],
             "word_to_pronounce": Word.get_word_to_pronounce(rowproxy['voweled_word'])
         }
+
+    @staticmethod
+    def invalid_query_string_length(letters):
+
+        # change to a set to de-dupe
+
+        letters_set = set(list(letters))
+
+        return len(letters_set) < 3
+
+
         
