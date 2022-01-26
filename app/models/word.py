@@ -148,11 +148,29 @@ class Word(db.Model):
     @staticmethod
     def invalid_query_string_length(letters):
 
+        """
+        check if query string is at least three unique characters
+        """
         # change to a set to de-dupe
 
         letters_set = set(list(letters))
 
         return len(letters_set) < 3
+
+    def invalid_query_string_chars(letters):
+        """
+        Check if there are non-arabic characters in the query string
+        """
+
+        lowest_arabic_code_point = int('0600', 16)
+
+        highest_arabic_code_point = int('06FF', 16)
+
+        for char in letters:
+            if ord(char) < lowest_arabic_code_point or ord(char) > highest_arabic_code_point:
+                return True
+
+        return False
 
 
         
