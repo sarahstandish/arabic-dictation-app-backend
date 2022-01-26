@@ -11,23 +11,28 @@ def handle_words():
 
     letters = request.args.get("letters")
 
+    # if query param found, filter by letters in query param value
     if letters:
+        # get string to pass to sql query
         similar_to_string = Word.get_letter_string(letters)
 
+        # form sql query
         sql_query = sqlalchemy.text(f"SELECT * FROM words WHERE unvoweled_word NOT SIMILAR TO '{similar_to_string}'")
+
+        # execute query
         words = db.session.execute(sql_query).fetchall()
-        # result is a list of rowproxy items
-        # for r in result:
-        #     # can be accessed via keys r['voweled_word']
-        #     print(type(r))
-        #     print(r.items())
-        #     print(r['voweled_word'])
-        words = Word.get_randomized_list(words)
-        return jsonify([Word.row_proxy_to_dict(word) for word in words])
 
+        # create a list of dictionaries
+        words = [Word.row_proxy_to_dict(word) for word in words]
+
+    # if no query param found, return all words
     else:
+        # fetch words
         words = Word.query.all()
+        
+        # create a list of dictionaries
+        words = [word.to_dict() for word in words]
 
-        words = Word.get_randomized_list(words)
-
-        return jsonify([word.to_dict() for word in words])
+    # select randomly from the list
+    words = Word.get_randomized_list(words)
+    return jsonify(words)
