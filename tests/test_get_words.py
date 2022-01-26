@@ -28,8 +28,8 @@ def test_get_words_no_saved_words(client):
     response_body = response.get_json()
 
     # Assert
-    assert response.status_code == 200
-    assert response_body == []
+    assert response.status_code == 404
+    assert response_body == { "message": "no results matched your search" }
 
 def test_get_words_one_saved_word(client, add_one_word):
     # Act
@@ -38,10 +38,12 @@ def test_get_words_one_saved_word(client, add_one_word):
 
     # Assert
     assert response.status_code == 200
-    assert len(response_body) == 1
-    assert response_body[0]["voweled_word"] == "ثُبوت"
-    assert response_body[0]["unvoweled_word"] == "ثبوت"
-    assert response_body[0]["word_to_pronounce"] == "ثُبوتْ"
+    words = response_body['words']
+    assert response_body["more_words_available"] == False
+    assert len(words) == 1
+    assert words[0]["voweled_word"] == "ثُبوت"
+    assert words[0]["unvoweled_word"] == "ثبوت"
+    assert words[0]["word_to_pronounce"] == "ثُبوتْ"
 
 def test_get_words_eleven_saved_words(client, add_eleven_words):
 
@@ -51,10 +53,12 @@ def test_get_words_eleven_saved_words(client, add_eleven_words):
 
     # Assert
     assert response.status_code == 200
-    assert len(response_body) == MAX_RETURN_LIST_LEN
-    for response in response_body:
-        assert response["word_to_pronounce"][-1] in ACCEPTABLE_WORD_ENDINGS
-        for char in response["unvoweled_word"]:
+    assert response_body["more_words_available"] == True
+    words = response_body["words"]
+    assert len(words) == MAX_RETURN_LIST_LEN
+    for word in words:
+        assert word["word_to_pronounce"][-1] in ACCEPTABLE_WORD_ENDINGS
+        for char in word["unvoweled_word"]:
                 assert char not in DIACRITICS
 
 def test_get_words_query_param_tha_ba_ta(client, add_eleven_words):
@@ -69,10 +73,12 @@ def test_get_words_query_param_tha_ba_ta(client, add_eleven_words):
     
     # Assert
     assert response.status_code == 200
-    assert len(response_body) == 1
-    assert response_body[0]["voweled_word"] == "ثَبَتَ"
-    assert response_body[0]["unvoweled_word"] == "ثبت"
-    assert response_body[0]["word_to_pronounce"] == "ثَبَتَ"
+    assert response_body["more_words_available"] == False
+    words = response_body["words"]
+    assert len(words) == 1
+    assert words[0]["voweled_word"] == "ثَبَتَ"
+    assert words[0]["unvoweled_word"] == "ثبت"
+    assert words[0]["word_to_pronounce"] == "ثَبَتَ"
 
 def test_get_words_longer_query_param(client, add_eleven_words):
 
@@ -86,9 +92,20 @@ def test_get_words_longer_query_param(client, add_eleven_words):
     
     # Assert
     assert response.status_code == 200
-    assert len(response_body) == 3
-    for response in response_body:
-        assert response["word_to_pronounce"][-1] in ACCEPTABLE_WORD_ENDINGS
-        for char in response["unvoweled_word"]:
+    assert response_body["more_words_available"] == False
+    words = response_body["words"]
+    assert len(words) == 3
+    for word in words:
+        assert word["word_to_pronounce"][-1] in ACCEPTABLE_WORD_ENDINGS
+        for char in word["unvoweled_word"]:
                 assert char not in DIACRITICS
 
+def test_get_words_query_param_no_matches_found(client, add_three_words):
+
+    # Act
+    response = client.get("/words?letters=منر")
+    response_body = response.get_json()
+
+    # Assert
+    assert response.status_code == 404
+    assert response_body == { "message": "no results matched your search" }

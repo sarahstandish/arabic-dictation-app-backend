@@ -34,5 +34,13 @@ def handle_words():
         words = [word.to_dict() for word in words]
 
     # select randomly from the list
+    more_words_available = Word.more_words_available(words)
     words = Word.get_randomized_list(words)
-    return jsonify(words)
+
+    if not words:
+        return jsonify({ "message": "no results matched your search" }), 404
+
+    return jsonify({
+        "more_words_available": more_words_available,
+        "words": words
+    })

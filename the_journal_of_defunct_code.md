@@ -43,3 +43,38 @@ It seems like it would make more sense to filter out the unwanted letters, than 
 `Note.query.filter(Note.message.match("%somestr%")).all()` (from https://stackoverflow.com/questions/3325467/sqlalchemy-equivalent-to-sql-like-statement)
 `Model.query.filter(Model.columnName.contains('sub_string'))` or 
 `Model.query.filter(not_(Model.columnName.contains('sub_string')))` from https://stackoverflow.com/questions/4926757/sqlalchemy-query-where-a-column-contains-a-substring
+
+# Extra tests, maybe unneeded?
+def test_get_words_query_param_with_alif_maqsuura(client, add_eleven_words):
+
+    """
+    Only one word should be returned
+    """
+    
+    # Act
+    response = client.get("/words?letters=لعيى")
+    response_body = response.get_json()
+    
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 1
+    assert response_body[0]["voweled_word"] == "عَلَى"
+    assert response_body[0]["unvoweled_word"] == "على"
+    assert response_body[0]["word_to_pronounce"] == "عَلَى"
+
+def test_get_words_query_param_with_alif_madda(client, add_eleven_words):
+
+    """
+    Only one word should be returned
+    """
+    
+    # Act
+    response = client.get("/words?letters=منخآر")
+    response_body = response.get_json()
+    
+    # Assert
+    assert response.status_code == 200
+    assert len(response_body) == 1
+    assert response_body[0]["voweled_word"] == "آخَر"
+    assert response_body[0]["unvoweled_word"] == "آخر"
+    assert response_body[0]["word_to_pronounce"] == "آخَرْ"

@@ -61,11 +61,11 @@ class Word(db.Model):
         return randomized_list
 
     @classmethod
-    def return_options_exhausted(cls, l):
+    def more_words_available(cls, l):
         """
         Return whether or not the return list has exhausted the options returned from the database
         """
-        return len(l) <= cls.max_return_list_len
+        return len(l) > cls.max_return_list_len
 
     @staticmethod
     def get_letter_string(letters):
