@@ -18,10 +18,14 @@ def create_sql_insertion_script(source_file, destination_file):
 
     with open(source_file, newline='', encoding='UTF-8') as csvfile:
         reader = csv.DictReader(csvfile)
+        word_set = set()
+        print(len(word_set))
         for row in reader:
-            value1 = row[f"\ufeff{column1}"]
-            value2 = row[f"{column2}"]
-            f.write(f"INSERT INTO {table_name} ({column1}, {column2}) VALUES ('{value1}', '{value2}');\n")
+            if row["\ufeffvoweled_word"] not in word_set:
+                value1 = row[f"\ufeff{column1}"]
+                value2 = row[f"{column2}"]
+                f.write(f"INSERT INTO {table_name} ({column1}, {column2}) VALUES ('{value1}', '{value2}');\n")
+                word_set.add(row['\ufeffvoweled_word'])
 
     f.close()
 
