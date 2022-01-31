@@ -3,10 +3,12 @@ from flask import Blueprint, json, jsonify, request, make_response
 import sqlalchemy
 from .models.word import Word
 from app import db
+from flask_cors import cross_origin
 
 words_bp = Blueprint("words", __name__, url_prefix="/words")
 
 @words_bp.route("", methods=["GET"])
+@cross_origin() # enable CORS
 def handle_words():
 
     letters = request.args.get("letters")
