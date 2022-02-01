@@ -1,9 +1,12 @@
 from encodings import utf_8
+from pydoc import text
 from flask import Blueprint, json, jsonify, request, make_response
 import sqlalchemy
 from .models.word import Word
 from app import db
 from flask_cors import cross_origin
+from google.cloud import texttospeech
+import base64
 
 words_bp = Blueprint("words", __name__, url_prefix="/words")
 
@@ -55,3 +58,34 @@ def handle_words():
         "more_words_available": more_words_available,
         "words": words
     })
+
+@words_bp.route("/<word_id>", methods=["GET"])
+@cross_origin()
+def handle_word(word_id):
+    
+    word = Word.query.get(word_id)
+
+    word_to_pronounce = word.get_word_to_pronounce()
+
+    # instantiate a client
+    client = texttospeech.TextToSpeechClient()
+
+    # set the text to be synthesized
+    input = texttospeech.SynthesisInput(text=word_to_pronounce)
+
+    # the voice I want to speak the content
+    voice = texttospeech.VoiceSelectionParams(
+        language_code="ar-XA", name="ar-XA-Wavenet-B"
+    )
+
+    # the type of audio I want returned
+    # let's go with mp3 for now and maybe change that later if need be
+    audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3)
+
+    # perform the text-to-speech request
+    response = client.synthesize_speech(input=input, voice=voice, audio_config=audio_config)
+    print("Response type is", type(response))
+    # b64_encoded_str = base64.b64encode(response.audio_content)
+    # print(b64_encoded_str)
+
+    return jsonify({"audio_content": str(response.audio_content)})

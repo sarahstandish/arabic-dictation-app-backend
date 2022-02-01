@@ -8,3 +8,4 @@ load_arabic_words.sql
 .env
 __pycache__
 *.pyc
+arabic-dictation-app-4e56db11e328.json

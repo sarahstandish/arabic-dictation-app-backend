@@ -18,8 +18,7 @@ class Word(db.Model):
             "unvoweled_word": self.unvoweled_word,
         }
 
-    @staticmethod
-    def get_word_to_pronounce(voweled_word):
+    def get_word_to_pronounce(self):
         """
         Create a word with sukuun on the end of the word that can be pronounced by the Google text to speech API without tanween damma on the end
 
@@ -37,11 +36,11 @@ class Word(db.Model):
             "\u0649" # alif maqsuura
             ]
 
-        if voweled_word[-1] not in acceptable_endings:
+        if self.voweled_word[-1] not in acceptable_endings:
             # append sukuun to the word and return it
-            return voweled_word + "\u0652"
+            return self.voweled_word + "\u0652"
 
-        return voweled_word
+        return self.voweled_word
 
     @classmethod
     def get_randomized_list(cls, l):
