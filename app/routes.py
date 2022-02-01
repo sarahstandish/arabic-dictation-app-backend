@@ -88,4 +88,7 @@ def handle_word(word_id):
     # b64_encoded_str = base64.b64encode(response.audio_content)
     # print(b64_encoded_str)
 
+    with open("output.mp3", "wb") as out:
+        out.write(response.audio_content)
+
     return jsonify({"audio_content": str(response.audio_content)})
