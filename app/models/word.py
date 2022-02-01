@@ -16,7 +16,6 @@ class Word(db.Model):
             "id": self.id,
             "voweled_word": self.voweled_word,
             "unvoweled_word": self.unvoweled_word,
-            "word_to_pronounce": Word.get_word_to_pronounce(self.voweled_word)
         }
 
     @staticmethod
@@ -142,7 +141,6 @@ class Word(db.Model):
             "id": rowproxy['id'],
             "voweled_word": rowproxy['voweled_word'],
             "unvoweled_word": rowproxy['unvoweled_word'],
-            "word_to_pronounce": Word.get_word_to_pronounce(rowproxy['voweled_word'])
         }
 
     @staticmethod
