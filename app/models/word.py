@@ -1,6 +1,7 @@
 from flask import current_app, abort, make_response, Response, jsonify
 from app import db
 import random
+import hashlib
 
 class Word(db.Model):
 
@@ -16,8 +17,15 @@ class Word(db.Model):
             "id": self.id,
             "voweled_word": self.voweled_word,
             "unvoweled_word": self.unvoweled_word,
+            "audio_file": Word.get_audio_url(self.voweled_word)
         }
 
+    @staticmethod
+    def get_audio_url(voweled_word):
+        file_name = hashlib.md5(bytes(voweled_word, 'utf-8')).hexdigest()
+        base_url = "https://storage.googleapis.com/arabic-dictation-app/"
+        audio_file_url = base_url + file_name
+        return audio_file_url
 
     @classmethod
     def get_randomized_list(cls, l):
@@ -117,6 +125,7 @@ class Word(db.Model):
             "id": rowproxy['id'],
             "voweled_word": rowproxy['voweled_word'],
             "unvoweled_word": rowproxy['unvoweled_word'],
+            "audio_file": Word.get_audio_url(rowproxy['voweled_word'])
         }
 
     @staticmethod
