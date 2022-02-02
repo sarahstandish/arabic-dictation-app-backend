@@ -35,6 +35,7 @@ def test_get_words_one_saved_word(client, add_one_word):
     assert len(words) == 1
     assert words[0]["voweled_word"] == "ثُبوت"
     assert words[0]["unvoweled_word"] == "ثبوت"
+    assert words[0]["audio_file"] == "https://storage.googleapis.com/arabic-dictation-app/f04974d81a18d14b05d895c192c5b6d0"
 
 def test_get_words_eleven_saved_words(client, add_eleven_words):
 
@@ -68,6 +69,8 @@ def test_get_words_query_param_tha_ba_ta(client, add_eleven_words):
     assert len(words) == 1
     assert words[0]["voweled_word"] == "ثَبَتَ"
     assert words[0]["unvoweled_word"] == "ثبت"
+    assert words[0]["audio_file"] == "https://storage.googleapis.com/arabic-dictation-app/84d7dc8ded0e456a5267b756bbf6a1d6"
+
 
 def test_get_words_longer_query_param(client, add_eleven_words):
 
