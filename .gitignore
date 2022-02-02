@@ -10,3 +10,4 @@ __pycache__
 *.pyc
 arabic-dictation-app-4e56db11e328.json
 output.mp3
+audio_files/

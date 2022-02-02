@@ -89,7 +89,13 @@
   `SELECT * FROM table WHERE field LIKE '%a%';`
 
 # Google Cloud API
-- audio content is sent as a string encoded in base64.  This is because JSON is a text format and doesn't directly support binary data.  This makes me think that I also need to send it back in base64.  It must be converted from base64 to binary before it can be played on a device.  I will need to prep for how to best recieve that data in React.
+- audio content is sent as a string encoded in base64.  This is because JSON is a text format and doesn't directly support binary data.  This makes me think that I also need to send it back in base64.  It must be converted from base64 to binary before it can be played on a device.
+
+# To do
+- Set versioning on Google cloud https://cloud.google.com/storage/docs/object-versioning
+- Prep API to send new data with info about host URL
+- Prep tests to test for the correct URL being sent
+- Write a script to upload all words to Google cloud
 
 # Questions
 - What's the best way to send back a response from the API?
