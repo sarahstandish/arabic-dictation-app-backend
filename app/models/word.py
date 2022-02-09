@@ -97,6 +97,7 @@ class Word(db.Model):
             "\u064A", # yaa
             "\u0649", # alif maqsuura
         }
+
         query_param_letters = set(list(letters))
 
         letters_to_filter_out = all_letters - query_param_letters
