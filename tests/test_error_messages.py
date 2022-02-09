@@ -7,7 +7,7 @@ def test_get_words_no_saved_words(client):
 
     # Assert
     assert response.status_code == 404
-    assert response_body == { "message": "no results matched your search" }
+    assert response_body == { "message": "No results matched your search." }
 
 def test_get_words_query_param_too_short(client, add_three_words):
     """
@@ -46,4 +46,4 @@ def test_get_words_query_param_has_non_arabic_character(client, add_three_words)
 
     # Assert
     assert response.status_code == 400
-    assert response_body == { "message" : "Invalid characters"}
+    assert response_body == { "message" : "Invalid characters."}

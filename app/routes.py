@@ -23,7 +23,7 @@ def handle_words():
         
         # check if the string has non-Arabic characters
         if Word.invalid_query_string_chars(letters):
-            return { "message" : "Invalid characters"}, 400
+            return { "message" : "Invalid characters."}, 400
 
         # get string to pass to sql query
         similar_to_string = Word.get_letter_string(letters)
@@ -50,7 +50,7 @@ def handle_words():
     words = Word.get_randomized_list(words)
 
     if not words:
-        return jsonify({ "message": "no results matched your search" }), 404
+        return jsonify({ "message": "No results matched your search." }), 404
 
     return jsonify({
         "more_words_available": more_words_available,
