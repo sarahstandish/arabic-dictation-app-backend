@@ -1,7 +1,7 @@
 from google.cloud import texttospeech
 import hashlib
 
-def get_audio_file(word_to_pronounce, file_destination):
+def get_audio_file_google_tts(word_to_pronounce, file_destination):
     
     # instantiate a client
     client = texttospeech.TextToSpeechClient()
