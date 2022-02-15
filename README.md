@@ -12,6 +12,8 @@ This app was created by [Sarah Standish](https://github.com/sarahstandish/)
 
 ## Minor features
 - Eight tests (four tests of the route with and without query parameters and four tests of error messages) confirm that major features are functioning.
+- Auxiliary text processing module can be used to clean text in a csv, remove vowels, create audio files using a text-to-speech api, and upload resulting files to Google Cloud Storage
+- Each word file is named via a hex digest of the MD5 hash of the voweled version of the word, so that filenames can always be re-generated, files can be found by knowing the voweled word, and audio files can be replaced periodically if an improved text-to-speech API is available
 
 ## Motivation for this project
 This project was motivated by my years of teaching Arabic.  Learning Arabic the Arabic alphabet is a major barrier for students; when I was teaching, I noticed that the majority of students who dropped out of Arabic did so within the first six months of study and that students who had not mastered the alphabet were the most likely to drop out.  Meanwhile, students who were able to master the sound-shape pairings of the Arabic alphabet within this time frame were likely to continue their study at least for another year.  Dictation was an activity I frequently did in class with students, and it was extremely helpful in terms of their ability to recognize Arabic letter sounds and accurately pair these sounds with the relevant shapes.  However, it took me a long time to give crucial individual feedback to each student.  I wished for an app that would give quick and accurate feedback to students.
