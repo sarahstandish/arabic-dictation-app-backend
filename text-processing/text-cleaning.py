@@ -2,20 +2,23 @@ import csv
 from distutils.command.check import check
 from pydoc import source_synopsis
 
+"""
+A variety of methods for text cleaning:
+- remove diacritics
+- check for latin characters
+- check for short words (1 char long)
+- remove final tanween fatha from words ending in alif maqsuura
+- write destination content to file
+- extract plurals
+"""
+
 source_file = 'text-processing/byu-corpus.csv'
 destination_file = 'text-processing/voweled-and-unvoweled-words.csv'
 
 def remove_diacritics(source_file):
 
     """
-    Diacritics:
-    U+0650 kesra
-    U+064F damma
-    U+064E fatha
-    U+0651 shadda
-    U+0652 sukuun
-    U+0670 superscript alif
-    U+064B tanween fatha
+    Remove diacritics from each word to produce an unvoweled version
     """
 
     diacritics = [

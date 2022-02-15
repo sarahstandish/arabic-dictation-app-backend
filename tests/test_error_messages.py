@@ -1,6 +1,9 @@
 from app.models.word import Word
 
 def test_get_words_no_saved_words(client):
+    """
+    Tests what happens when the database is empty, identical to behavior if there are no results returned.
+    """
     # Act
     response = client.get("/words")
     response_body = response.get_json()
@@ -11,7 +14,7 @@ def test_get_words_no_saved_words(client):
 
 def test_get_words_query_param_too_short(client, add_three_words):
     """
-    Return an error if query param is fewer than three letters
+    Return an error if query param is fewer than three characters
     """
 
     # Act
@@ -24,7 +27,7 @@ def test_get_words_query_param_too_short(client, add_three_words):
 
 def test_get_words_query_param_has_repeated_character(client, add_three_words):
     """
-    Return an error if query param is fewer than three letters
+    Return an error if query param is fewer than three unique characters
     """
 
     # Act
@@ -37,7 +40,7 @@ def test_get_words_query_param_has_repeated_character(client, add_three_words):
 
 def test_get_words_query_param_has_non_arabic_character(client, add_three_words):
     """
-    Return an error if query param is fewer than three letters
+    Return an error if query param contains a non-Arabic character
     """
 
     # Act

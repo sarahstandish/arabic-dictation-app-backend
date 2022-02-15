@@ -2,7 +2,7 @@ import csv
 from create_audio_file_upload_word import *
 
 """
-Take vocabular words from a CSV file 
+Take vocabulary words from a CSV file 
 Create an audio file
 And upload it to the database
 """

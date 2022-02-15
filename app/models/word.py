@@ -5,6 +5,7 @@ import hashlib
 
 class Word(db.Model):
 
+    # variable that determines the maximum number of database entries that will be returned
     max_return_list_len = 10
 
     id = db.Column(db.Integer, primary_key=True)
@@ -22,6 +23,10 @@ class Word(db.Model):
 
     @staticmethod
     def get_audio_url(voweled_word):
+        """
+        Generate the url where the audio file for that word can be found.
+        The file name is a hex digest of an md5 hash of the voweled version of the word.
+        """
         file_name = hashlib.md5(bytes(voweled_word, 'utf-8')).hexdigest()
         base_url = "https://storage.googleapis.com/arabic-dictation-app/"
         audio_file_url = base_url + file_name
@@ -53,6 +58,8 @@ class Word(db.Model):
     @staticmethod
     def get_letter_string(letters):
         """
+        Generate a string to be used in the SQL query.
+        The SQL query will return only 
         Letters is a string from the url query params.
         Change these letters to a set.
         Subtract that set from the set of all possible letters.

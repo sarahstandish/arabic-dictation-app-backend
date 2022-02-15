@@ -7,6 +7,9 @@ import sys
 import subprocess
 
 def get_audio_file_aws_polly(word_to_pronounce, file_destination):
+    """
+    Upload a piece of text to AWS Polly, get back an audio file with that text as audio
+    """
 
     # create a client using the credentials and region defined in [adminuser]
     session = Session(profile_name="adminuser")

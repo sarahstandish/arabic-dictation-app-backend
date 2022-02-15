@@ -24,6 +24,13 @@ ACCEPTABLE_WORD_ENDINGS = [
 
 
 def test_get_words_one_saved_word(client, add_one_word):
+    """
+    Test return when database contains only one word.
+    Expected behavior:
+    - one word is returned, with a voweled and unvoweled version
+    - no more words are available
+    - audio file location is returned, where audio file name is a hexdigest of an md5 hash of the voweled version of the word
+    """
     # Act
     response = client.get("/words")
     response_body = response.get_json()
@@ -38,6 +45,14 @@ def test_get_words_one_saved_word(client, add_one_word):
     assert words[0]["audio_file"] == "https://storage.googleapis.com/arabic-dictation-app/f04974d81a18d14b05d895c192c5b6d0"
 
 def test_get_words_eleven_saved_words(client, add_eleven_words):
+
+    """
+    Test return when database contains only one word.
+    Expected behavior:
+    - the number of words returned matches the maximum length of a returned list of words, as set by the API
+    - more words matching the parameters are available
+    - unvoweled word fields do not contain diacritics
+    """
 
     # Act
     response = client.get("/words")
@@ -55,7 +70,12 @@ def test_get_words_eleven_saved_words(client, add_eleven_words):
 def test_get_words_query_param_tha_ba_ta(client, add_eleven_words):
 
     """
-    Only one word should be returned
+    Test return when query string searches for words containing only ث ب ت and only one word matches in database
+    Expected behavior:
+    - one word is returned, with a voweled and unvoweled version
+    - the word returned only contains the letters ث ب ت
+    - no more words are available
+    - audio file location is returned, where audio file name is a hexdigest of an md5 hash of the voweled version of the word
     """
     
     # Act
@@ -75,7 +95,12 @@ def test_get_words_query_param_tha_ba_ta(client, add_eleven_words):
 def test_get_words_longer_query_param(client, add_eleven_words):
 
     """
-    Four words should be returned
+    Test return when query string searches for words containing only ث ب ت and only one word matches in database
+    Expected behavior:
+    - four words are returned
+    - the word returned only contains the letters ا ن و ت ب ث
+    - no more words are available
+    - unvoweled word fields do not contain diacritics
     """
     
     # Act

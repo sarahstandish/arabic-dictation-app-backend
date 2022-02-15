@@ -4,6 +4,8 @@ def get_word_to_pronounce(voweled_word):
 
         U+0652 sukuun
         U+064B tanween fatha
+    
+    NB: This is not necessary to use with AWS Polly text-to-speech
     """
 
     acceptable_endings = [
