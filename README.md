@@ -1,5 +1,5 @@
 # Arabic Dictation App
-Arabic Dictation App is a tool for Arabic learners to practice the Arabic alphabet. View the live web app [here](https://arabic-dictation-app.herokuapp.com/).  The back end is hosted [here](https://arabic-dictation-api.herokuapp.com/)
+Arabic Dictation App is a tool for Arabic learners to practice the Arabic alphabet. View the live web app [here](https://arabicdictation.app).  The back end is hosted [here](https://arabic-dictation-api.herokuapp.com/)
 
 ## Author
 This app was created by [Sarah Standish](https://github.com/sarahstandish/)
